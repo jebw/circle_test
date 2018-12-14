@@ -16,7 +16,7 @@ jobs:
       - run: docker run -it --rm --link postgres:postgres -e DATABASE_URL=postgres://postgres:debug@postgres/circle circle-test rake db:schema:load
       - run: docker run -d --name=smoketest --health-interval=4s --link postgres:postgres -e DATABASE_URL=postgres://postgres:debug@postgres/circle circle-test 
       - run: sleep 15 # ugly but gives the web app time to boot
-      - run: docker ps | grep smoketest | grep healthy || false
+      - run: docker ps | grep smoketest | grep '(healthy)' || false
       
       
           
