@@ -7,7 +7,11 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - checkout
-      - run: echo "hello jeremy"
+      - run: docker run --name=postgres -e POSTGRES_PASSWORD -d postgres 
       - run: docker build -t circle-test .
+      - run: docker run -it --rm --link postgres:postgres -e DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@postgres/postgres_test -e RAILS_ENV=test circle_test rake db:create
+      - run: docker run -it --rm --link postgres:postgres -e DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@postgres/postgres_test -e RAILS_ENV=test circle_test rake db:test:prepare
+      - run: docker run -it --rm --link postgres:postgres -e DATABASE_URL=postgres://postgres:$POSTGRES_PASSWORD@postgres/postgres_test -e RAILS_ENV=test circle_test rake test
+      
           
       
