@@ -4,7 +4,8 @@ jobs:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - checkout
       - run: echo "hello jeremy"
       - run: docker build -t circle-test .
